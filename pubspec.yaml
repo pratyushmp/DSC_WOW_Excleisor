@@ -42,6 +42,7 @@ dependencies:
   google_sign_in: ^4.5.1
   datetime_picker_formfield: ^1.0.0
   shared_preferences: ^0.5.12+4
+  location: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

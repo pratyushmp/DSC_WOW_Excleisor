@@ -33,6 +33,7 @@ dependencies:
   firebase: ^7.3.3
   firebase_auth: ^0.18.4+1
   firebase_core: ^0.5.3
+  firebase_database: ^4.4.0
 
   flutter_facebook_auth: ^1.0.2+1
   flutter_overlay_loader: ^0.0.2

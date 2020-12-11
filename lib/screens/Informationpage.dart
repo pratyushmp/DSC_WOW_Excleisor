@@ -1,13 +1,21 @@
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/primaryButton.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 var datestring = "";
 
+TextEditingController nameController = TextEditingController();
+TextEditingController phoneNumber = TextEditingController();
+String dob;
+
 class InfoPage extends StatefulWidget {
+  User user;
+  InfoPage({this.user});
   @override
   _InfoPageState createState() => new _InfoPageState();
 }
@@ -104,7 +112,10 @@ class _InfoPageState extends State<InfoPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: TextField(decoration: null),
+                                    child: TextField(
+                                      controller: nameController,
+                                      decoration: null
+                                    ),
                                   ),
                                 ),
                               ),
@@ -136,6 +147,7 @@ class _InfoPageState extends State<InfoPage> {
                                         lastDate: DateTime.now());
                                     setState(() {
                                       datestring = printdate(response);
+                                      dob = datestring;
                                     });
 
                                   },
@@ -195,7 +207,10 @@ class _InfoPageState extends State<InfoPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextField(
-                                        decoration: null, keyboardType: TextInputType.number),
+                                      controller: phoneNumber,
+                                      decoration: null, 
+                                      keyboardType: TextInputType.number
+                                    ),
                                   ),
                                 ),
                               ),
@@ -208,7 +223,20 @@ class _InfoPageState extends State<InfoPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     GestureDetector(
-                                      onTap: (){
+                                      onTap: () async {
+                                        Loader.show(context,progressIndicator: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                                        ));
+                                        await Firebase.initializeApp();
+
+                                        var databaseReference = FirebaseDatabase.instance.reference();
+                                        await databaseReference.child('Users').child('${widget.user.uid}').set({
+                                          'Email':widget.user.email,
+                                          'Name':nameController.text,
+                                          'Phone Number':phoneNumber.text,
+                                        });
+
+                                        Loader.hide();
                                         currentStep++;
                                         setState(() {
                                           

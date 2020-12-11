@@ -97,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ));
                               } else {
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => InfoPage(),
+                                  builder: (context) => InfoPage(user: response,),
                                 ));
                               }
                             }

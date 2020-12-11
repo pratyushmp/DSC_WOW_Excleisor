@@ -1,5 +1,5 @@
 import 'package:befikr_app/screens/Informationpage.dart';
-// import 'package:befikr_app/screens/verifyScreen.dart';
+import 'package:befikr_app/screens/verifyScreen.dart';
 import 'package:befikr_app/utils/authentication.dart';
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/inputWithIcon.dart';
@@ -92,13 +92,13 @@ class _AuthScreenState extends State<AuthScreen> {
                             if(response.runtimeType.toString() == 'User') {
                               if (!response.emailVerified) {
                                 await response.sendEmailVerification();
-                                // Navigator.push(context, MaterialPageRoute(
-                                //   builder: (context) => VerifyScreen(email:response.email),
-                                // ));
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => VerifyScreen(email:response.email),
+                                ));
                               } else {
-                                // Navigator.push(context, MaterialPageRoute(
-                                //   builder: (context) => InfoPage(),
-                                // ));
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => InfoPage(),
+                                ));
                               }
                             }
                           },
@@ -164,9 +164,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                         if(response.runtimeType.toString() == 'UserCredential') {
                                           if (!response.user.emailVerified) {
                                             await response.user.sendEmailVerification();
-                                            // Navigator.push(context, MaterialPageRoute(
-                                            //   builder: (context) => VerifyScreen(email:response.user.email),
-                                            // ));
+                                            Navigator.push(context, MaterialPageRoute(
+                                              builder: (context) => VerifyScreen(email:response.user.email),
+                                            ));
                                           } else {
                                             
                                           }

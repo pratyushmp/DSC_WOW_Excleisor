@@ -1,5 +1,7 @@
+import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/primaryButton.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,11 @@ class _InfoPageState extends State<InfoPage> {
   int currentStep = 0;
   bool complete = false;
 
+  List<Widget> familyCards = [];
+
+  int familyMembers = 1;
+  int first = 0;
+
   next() {
     currentStep + 1 != 2
         ? goTo(currentStep + 1)
@@ -29,6 +36,24 @@ class _InfoPageState extends State<InfoPage> {
 
   goTo(int step) {
     setState(() => currentStep = step);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if(first==0) {
+      familyCards.add(addFamilyCard(1));
+      // familyCards.add(addFamilyCard(2));
+      first = 1;
+    }
   }
 
   @override
@@ -182,11 +207,19 @@ class _InfoPageState extends State<InfoPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 25.0),
-                                      child: Container(
-                                        child: PrimaryButton(
-                                          btnText: 'Next',
+                                    GestureDetector(
+                                      onTap: (){
+                                        currentStep++;
+                                        setState(() {
+                                          
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 25.0),
+                                        child: Container(
+                                          child: PrimaryButton(
+                                            btnText: 'Next',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -200,15 +233,115 @@ class _InfoPageState extends State<InfoPage> {
                       isActive: currentStep == 1 ? true : false,
                       state: StepState.editing,
                       title: const Text('Add Family'),
-                      content: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Home Address'),
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Postcode'),
-                          ),
-                        ],
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height/2.5,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/family.png'),
+                                  fit: BoxFit.cover
+                                )
+                              ),
+                            ),
+                            Text(
+                              "Add Family Members ",
+                              style: TextStyle(
+                                fontFamily: 'quicksand_bold',
+                                fontSize: 20
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: familyCards.length,
+                                separatorBuilder: (context,int index) {
+                                  return SizedBox(height:20);
+                                },
+                                itemBuilder: (context,int index) {
+                                  return familyCards[index];
+                                },
+                              ),
+                            ),
+
+                            SizedBox(height:20),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical:15.0,horizontal: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if(familyMembers == 5) {
+                                            Fluttertoast.showToast(
+                                              msg: "Can't Add More Members",
+                                            );
+                                          }else {
+                                            familyMembers++;
+                                            familyCards.add(addFamilyCard(familyMembers));
+                                            setState(() {
+                                              
+                                            }); 
+                                          }
+                                        },
+                                        child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal:10.0),
+                                        child: Container(
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: primaryColor,
+                                            borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Center(
+                                            child: Text(
+                                              "Add + ",
+                                              style: TextStyle(
+                                                fontFamily: 'quicksand_bold',
+                                                color: Colors.white
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal:10.0),
+                                      child: Container(
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: secondaryColor,
+                                          borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Center(
+                                          child: Text(
+                                            "Save",
+                                            style: TextStyle(
+                                              fontFamily: 'quicksand_bold',
+                                              color: Colors.white
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(height:20),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -230,5 +363,102 @@ class _InfoPageState extends State<InfoPage> {
     var month = response.month;
     var year = response.year;
     return "$date/$month/$year";
+  }
+
+  Widget addFamilyCard(int index) {
+    return Container(
+      // height: 100,
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0,7),
+            blurRadius: 20
+          )
+        ]
+      ),
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: Row(
+              children: [
+                Text(
+                  "Family Member $index",
+                  style: TextStyle(
+                    fontFamily: 'quicksand_bold'
+                  ),
+                ),
+
+                Spacer(),
+
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    if(familyMembers == 1) {
+                      Fluttertoast.showToast(msg: "Minimum Members should be 1");
+                    } else {
+                      familyCards.removeAt(index-1);
+                      familyMembers--;
+                      setState(() {
+                        
+                      });
+                    }
+                  },
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Name",
+                hintStyle: TextStyle(
+                  fontFamily: 'quicksand_bold',
+                )
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Relation",
+                hintStyle: TextStyle(
+                  fontFamily: 'quicksand_bold',
+                )
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Phone Number",
+                hintStyle: TextStyle(
+                  fontFamily: 'quicksand_bold',
+                )
+              ),
+            ),
+          ),
+
+          SizedBox(height:10),
+        ],
+      ),
+    );
   }
 }

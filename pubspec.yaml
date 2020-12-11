@@ -30,6 +30,10 @@ dependencies:
   cupertino_icons: ^1.0.0
   intro_screen_onboarding_flutter: ^0.1.5
 
+  firebase: ^7.3.3
+  firebase_auth: ^0.18.4+1
+  firebase_core: ^0.5.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

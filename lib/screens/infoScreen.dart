@@ -13,6 +13,18 @@ TextEditingController nameController = TextEditingController();
 TextEditingController phoneNumber = TextEditingController();
 String dob;
 
+List<TextEditingController> nameControllers = [
+  TextEditingController(),
+];
+
+List<TextEditingController> relationControllers = [
+  TextEditingController(),
+];
+
+List<TextEditingController> numberControllers = [
+  TextEditingController(),
+];
+
 class InfoPage extends StatefulWidget {
   User user;
   InfoPage({this.user});
@@ -57,11 +69,7 @@ class _InfoPageState extends State<InfoPage> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if(first==0) {
-      familyCards.add(addFamilyCard(1));
-      // familyCards.add(addFamilyCard(2));
-      first = 1;
-    }
+    
   }
 
   String printdate(response) {
@@ -92,7 +100,7 @@ class _InfoPageState extends State<InfoPage> {
             child: Row(
               children: [
                 Text(
-                  "Family Member $index",
+                  "Family Member ${index+1}",
                   style: TextStyle(
                     fontFamily: 'quicksand_bold'
                   ),
@@ -106,7 +114,11 @@ class _InfoPageState extends State<InfoPage> {
                     if(familyMembers == 1) {
                       Fluttertoast.showToast(msg: "Minimum Members should be 1");
                     } else {
-                      familyCards.removeAt(index-1);
+                      // familyCards.removeAt(index);
+                      nameControllers.removeAt(index);
+                      relationControllers.removeAt(index);
+                      numberControllers.removeAt(index);
+                      
                       familyMembers--;
                       setState(() {
                         
@@ -120,6 +132,7 @@ class _InfoPageState extends State<InfoPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
             child: TextField(
+              controller: nameControllers[index],
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -135,6 +148,7 @@ class _InfoPageState extends State<InfoPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
             child: TextField(
+              controller: relationControllers[index],
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -150,6 +164,7 @@ class _InfoPageState extends State<InfoPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
             child: TextField(
+              controller: numberControllers[index],
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -403,12 +418,12 @@ class _InfoPageState extends State<InfoPage> {
                               child: ListView.separated(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: familyCards.length,
+                                itemCount: familyMembers,
                                 separatorBuilder: (context,int index) {
                                   return SizedBox(height:20);
                                 },
                                 itemBuilder: (context,int index) {
-                                  return familyCards[index];
+                                  return addFamilyCard(index);
                                 },
                               ),
                             ),
@@ -429,7 +444,15 @@ class _InfoPageState extends State<InfoPage> {
                                             );
                                           }else {
                                             familyMembers++;
-                                            familyCards.add(addFamilyCard(familyMembers));
+                                            // familyCards.add(addFamilyCard(familyMembers));
+                                            nameControllers.add(TextEditingController());
+                                            relationControllers.add(TextEditingController());
+                                            numberControllers.add(TextEditingController());
+
+                                            print('Family : $familyMembers');
+                                            print('Names : ${nameControllers.length}');
+                                            print('Relations : ${relationControllers.length}');
+                                            print('numbers  : ${numberControllers.length}');
                                             setState(() {
                                               
                                             }); 

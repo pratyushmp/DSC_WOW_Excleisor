@@ -1,9 +1,13 @@
+import 'package:befikr_app/screens/homeScreen.dart';
 import 'package:befikr_app/utils/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Permission extends StatefulWidget {
+  User user;
+  Permission({this.user});
   @override
   _PermissionState createState() => _PermissionState();
 }
@@ -143,29 +147,36 @@ class _PermissionState extends State<Permission> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Container(
-                  height: 50,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: primaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Let's Go",
-                          style: TextStyle(
-                            fontFamily: 'quicksand_bold',
-                            fontSize: 16,
-                            letterSpacing: 0.6,
-                            color: Colors.white,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => Home(user: widget.user),
+                    ));
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: primaryColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Let's Go",
+                            style: TextStyle(
+                              fontFamily: 'quicksand_bold',
+                              fontSize: 16,
+                              letterSpacing: 0.6,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        Icon(Icons.arrow_right_alt_rounded, color: Colors.white,)
-                      ],
+                          Icon(Icons.arrow_right_alt_rounded, color: Colors.white,)
+                        ],
+                      ),
                     ),
                   ),
                 ),

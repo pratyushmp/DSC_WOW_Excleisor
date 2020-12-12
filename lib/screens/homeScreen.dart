@@ -5,11 +5,15 @@ import 'package:befikr_app/screens/onboardingScreen.dart';
 import 'package:befikr_app/screens/permissionScreen.dart';
 import 'package:befikr_app/screens/secondScreen.dart';
 import 'package:befikr_app/utils/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_page_indicator/ink_page_indicator.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
+
+  User user;
+
+  Home({Key key,this.user}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();

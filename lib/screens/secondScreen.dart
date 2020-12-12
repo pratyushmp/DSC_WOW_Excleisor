@@ -1,17 +1,22 @@
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/circlePainter.dart';
 import 'package:befikr_app/widgets/curve_wave.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:holding_gesture/holding_gesture.dart';
+import 'package:location/location.dart';
+
+int count = 0;
 
 
 
 class SecondScreen extends StatefulWidget {
-  const SecondScreen({Key key, this.size = 80.0, this.color = Colors.red,
+  SecondScreen({Key key, this.size = 80.0, this.color = Colors.red,
     this.onPressed,this.child,}) : super(key: key);
   final double size;
-  final Color color;
+  Color color;
   final Widget child;
   final VoidCallback onPressed;
   @override
@@ -20,6 +25,9 @@ class SecondScreen extends StatefulWidget {
 
 class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMixin {
   AnimationController _controller;
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -38,8 +46,42 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
     
     return HoldDetector(
       onHold: () {
-        print('a');
-      },
+        count++;
+        print(count);
+        if(count == 5) {
+          // count = 0;
+          widget.color = Colors.green;
+          Location.instance.onLocationChanged.listen((locationData) async {
+            if (locationData != null) {
+              await Firebase.initializeApp();
+              var databaseReference = FirebaseDatabase.instance.reference();
+              await databaseReference.child('Users').child('bZAWBS3W4VbTDqOohF6jnl6MIzQ2').child('Location').set({
+                'Lat':locationData.latitude,
+                'Long':locationData.longitude
+              });
+            }
+          });
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            duration: Duration(seconds: 1),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "You are SAFE !!",
+                  style: TextStyle(
+                    fontFamily: 'quicksand',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ],
+            ),
+          ));
+          setState(() {
+            
+          });
+        }
+      }, 
       holdTimeout: Duration(milliseconds: 200),
       enableHapticFeedback: true,
       child: Center(
@@ -49,8 +91,8 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
             decoration: BoxDecoration(
               gradient: RadialGradient(
                 colors: <Color>[
-                  primaryColor,
-                  Color.lerp(primaryColor, Colors.black, .05)
+                  widget.color,
+                  Color.lerp(widget.color, Colors.black, .05)
                 ],
               ),
             ),
@@ -72,6 +114,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Center(
         child: CustomPaint(

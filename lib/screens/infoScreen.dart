@@ -1,4 +1,5 @@
 import 'package:befikr_app/screens/homeScreen.dart';
+import 'package:befikr_app/screens/permissionScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/primaryButton.dart';
@@ -511,7 +512,7 @@ class _InfoPageState extends State<InfoPage> {
                                         Loader.hide();
 
                                         Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => Home(),
+                                          builder: (context) => Permission(user:widget.user),
                                         ));
                                         
                                       },

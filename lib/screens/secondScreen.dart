@@ -1,7 +1,9 @@
+import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/circlePainter.dart';
 import 'package:befikr_app/widgets/curve_wave.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
+import 'package:holding_gesture/holding_gesture.dart';
 
 
 
@@ -32,26 +34,35 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
     super.dispose();
   }
   Widget _button() {
-    return Center(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(widget.size),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              colors: <Color>[
-                widget.color,
-                Color.lerp(widget.color, Colors.black, .05)
-              ],
-            ),
-          ),
-          child: ScaleTransition(
-              scale: Tween(begin: 0.95, end: 1.0).animate(
-                CurvedAnimation(
-                  parent: _controller,
-                  curve: const CurveWave(),
-                ),
+
+    
+    return HoldDetector(
+      onHold: () {
+        print('a');
+      },
+      holdTimeout: Duration(milliseconds: 200),
+      enableHapticFeedback: true,
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(widget.size),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                colors: <Color>[
+                  primaryColor,
+                  Color.lerp(primaryColor, Colors.black, .05)
+                ],
               ),
-              child: Icon(Icons.speaker_phone, size: 44,)
+            ),
+            child: ScaleTransition(
+                scale: Tween(begin: 0.95, end: 1.0).animate(
+                  CurvedAnimation(
+                    parent: _controller,
+                    curve: const CurveWave(),
+                  ),
+                ),
+                child: Icon(Icons.speaker_phone, size: 44,)
+            ),
           ),
         ),
       ),
@@ -61,6 +72,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: CustomPaint(
           painter: CirclePainter(

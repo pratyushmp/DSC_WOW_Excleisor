@@ -1,8 +1,10 @@
+import 'package:befikr_app/screens/firstPage.dart';
 import 'package:befikr_app/screens/infoScreen.dart';
 import 'package:befikr_app/screens/authScreen.dart';
 import 'package:befikr_app/screens/onboardingScreen.dart';
 import 'package:befikr_app/screens/permissionScreen.dart';
 import 'package:befikr_app/screens/secondScreen.dart';
+import 'package:befikr_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_page_indicator/ink_page_indicator.dart';
 
@@ -31,8 +33,8 @@ class _HomeState extends State<Home> {
 
   List<Widget> _createChildren(int count) {
     final List<Widget> result = [
-      InfoPage(),
-      SecondScreen(),
+      FirstPage(),
+      SecondScreen(color: primaryColor,),
       Permission()
 
 

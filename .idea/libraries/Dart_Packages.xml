@@ -198,6 +198,13 @@
             </list>
           </value>
         </entry>
+        <entry key="holding_gesture">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/holding_gesture-0.0.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="http">
           <value>
             <list>
@@ -310,6 +317,20 @@
             </list>
           </value>
         </entry>
+        <entry key="permission_handler">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-5.0.1+1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="permission_handler_platform_interface">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_platform_interface-2.0.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="platform">
           <value>
             <list>
@@ -335,6 +356,20 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.1.5/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="rect_getter">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/rect_getter-0.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="ripple_effect">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/ripple_effect-0.1.1/lib" />
             </list>
           </value>
         </entry>
@@ -485,6 +520,7 @@
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.6/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-1.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.9.2/lib" />
+      <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/holding_gesture-0.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.2/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-3.1.4/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/ink_page_indicator-0.1.5/lib" />
@@ -501,10 +537,14 @@
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-1.0.4/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-0.0.4+3/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.2/lib" />
+      <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-5.0.1+1/lib" />
+      <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_platform_interface-2.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/platform-2.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-1.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/process-3.0.13/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.1.5/lib" />
+      <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/rect_getter-0.1.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/ripple_effect-0.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-0.0.2+4/lib" />
       <root url="file://$PROJECT_DIR$/../../Flutter SDK/flutter_windows_1.22.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11/lib" />

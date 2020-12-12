@@ -1,9 +1,10 @@
-import 'package:befikr_app/screens/firstPage.dart';
+import 'package:befikr_app/screens/firstScreen.dart';
 import 'package:befikr_app/screens/infoScreen.dart';
 import 'package:befikr_app/screens/authScreen.dart';
 import 'package:befikr_app/screens/onboardingScreen.dart';
 import 'package:befikr_app/screens/permissionScreen.dart';
 import 'package:befikr_app/screens/secondScreen.dart';
+import 'package:befikr_app/screens/thirdScreen.dart';
 import 'package:befikr_app/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _HomeState extends State<Home> {
     final List<Widget> result = [
       FirstPage(),
       SecondScreen(color: primaryColor,user: widget.user,),
-      Permission()
+      ThirdPage()
 
 
     ];

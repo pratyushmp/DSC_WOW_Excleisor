@@ -1,6 +1,7 @@
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/circlePainter.dart';
 import 'package:befikr_app/widgets/curve_wave.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,10 @@ int count = 0;
 
 class SecondScreen extends StatefulWidget {
   SecondScreen({Key key, this.size = 80.0, this.color = Colors.red,
-    this.onPressed,this.child,}) : super(key: key);
+    this.onPressed,this.child,this.user}) : super(key: key);
   final double size;
   Color color;
+  User user;
   final Widget child;
   final VoidCallback onPressed;
   @override
@@ -55,7 +57,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
             if (locationData != null) {
               await Firebase.initializeApp();
               var databaseReference = FirebaseDatabase.instance.reference();
-              await databaseReference.child('Users').child('bZAWBS3W4VbTDqOohF6jnl6MIzQ2').child('Location').set({
+              await databaseReference.child('Users').child(widget.user.uid).child('Location').set({
                 'Lat':locationData.latitude,
                 'Long':locationData.longitude
               });

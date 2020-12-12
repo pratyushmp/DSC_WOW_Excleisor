@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
   List<Widget> _createChildren(int count) {
     final List<Widget> result = [
       FirstPage(),
-      SecondScreen(color: primaryColor,),
+      SecondScreen(color: primaryColor,user: widget.user,),
       Permission()
 
 

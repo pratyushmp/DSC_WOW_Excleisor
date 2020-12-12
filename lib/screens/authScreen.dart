@@ -1,9 +1,12 @@
+import 'package:befikr_app/screens/homeScreen.dart';
 import 'package:befikr_app/screens/infoScreen.dart';
 import 'package:befikr_app/screens/verifyScreen.dart';
 import 'package:befikr_app/utils/authentication.dart';
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/inputWithIcon.dart';
 import 'package:befikr_app/widgets/primaryButton.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -96,9 +99,29 @@ class _AuthScreenState extends State<AuthScreen> {
                                   builder: (context) => VerifyScreen(email:response.email),
                                 ));
                               } else {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => InfoPage(user: response,),
+
+                                Loader.show(context,progressIndicator: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
                                 ));
+                                
+                                await Firebase.initializeApp();
+                                var databaseReference = FirebaseDatabase.instance.reference();
+
+                                var data = await databaseReference.child('Users').child('${response.uid}').once().then((value) {
+                                  return value.value;
+                                });
+
+                                Loader.hide();
+
+                                if(data == null) {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => InfoPage(user: response,),
+                                  ));
+                                } else {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => Home(),
+                                  ));
+                                }
                               }
                             }
                           },

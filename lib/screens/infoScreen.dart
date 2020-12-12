@@ -1,3 +1,4 @@
+import 'package:befikr_app/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/primaryButton.dart';
@@ -443,19 +444,27 @@ class _InfoPageState extends State<InfoPage> {
                                               msg: "Can't Add More Members",
                                             );
                                           }else {
-                                            familyMembers++;
-                                            // familyCards.add(addFamilyCard(familyMembers));
-                                            nameControllers.add(TextEditingController());
-                                            relationControllers.add(TextEditingController());
-                                            numberControllers.add(TextEditingController());
+                                            if(nameControllers[familyMembers-1].text == "" || relationControllers[familyMembers-1].text == "" || numberControllers[familyMembers-1].text == "") {
+                                              Fluttertoast.showToast(
+                                                msg: "Enter All the details before adding new member",
+                                                backgroundColor: Colors.black,
+                                                textColor: Colors.white
+                                              );
+                                            } else {
+                                              familyMembers++;
+                                              // familyCards.add(addFamilyCard(familyMembers));
+                                              nameControllers.add(TextEditingController());
+                                              relationControllers.add(TextEditingController());
+                                              numberControllers.add(TextEditingController());
 
-                                            print('Family : $familyMembers');
-                                            print('Names : ${nameControllers.length}');
-                                            print('Relations : ${relationControllers.length}');
-                                            print('numbers  : ${numberControllers.length}');
-                                            setState(() {
-                                              
-                                            }); 
+                                              print('Family : $familyMembers');
+                                              print('Names : ${nameControllers.length}');
+                                              print('Relations : ${relationControllers.length}');
+                                              print('numbers  : ${numberControllers.length}');
+                                              setState(() {
+                                                
+                                              }); 
+                                            }
                                           }
                                         },
                                         child: Padding(
@@ -483,21 +492,47 @@ class _InfoPageState extends State<InfoPage> {
 
                                   Expanded(
                                     flex: 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal:10.0),
-                                      child: Container(
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: secondaryColor,
-                                          borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        width: MediaQuery.of(context).size.width,
-                                        child: Center(
-                                          child: Text(
-                                            "Save",
-                                            style: TextStyle(
-                                              fontFamily: 'quicksand_bold',
-                                              color: Colors.white
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        Loader.show(context,progressIndicator: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                                        ));
+                                        await Firebase.initializeApp();
+
+                                        var databaseReference = FirebaseDatabase.instance.reference();
+                                        for(int i=0;i<familyMembers;i++) {
+                                          await databaseReference.child('Users').child('${widget.user.uid}').child('Family Members').set({
+                                            "${i+1}" : {
+                                              'Name' : nameControllers[i].text,
+                                              'Relation': relationControllers[i].text,
+                                              'Phone': numberControllers[i].text,
+                                            },
+                                          });
+                                        }
+
+                                        Loader.hide();
+
+                                        Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => Home(),
+                                        ));
+                                        
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal:10.0),
+                                        child: Container(
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: secondaryColor,
+                                            borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Center(
+                                            child: Text(
+                                              "Save",
+                                              style: TextStyle(
+                                                fontFamily: 'quicksand_bold',
+                                                color: Colors.white
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -516,8 +551,8 @@ class _InfoPageState extends State<InfoPage> {
                   ],
                   currentStep: currentStep,
                   type: StepperType.horizontal,
-                  onStepContinue: next,
-                  onStepTapped: (step) => goTo(step),
+                  // onStepContinue: next,
+                  // onStepTapped: (step) => goTo(step),
                   onStepCancel: cancel,
                   controlsBuilder: (BuildContext context,
                           {VoidCallback onStepContinue,

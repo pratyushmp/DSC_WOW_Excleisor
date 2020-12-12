@@ -71,26 +71,28 @@ class _HomeState extends State<Home> {
     shape = IndicatorShape.circle(5);
     activeShape = IndicatorShape.circle(5);
 
-    return Stack(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            buildInkPageIndicator(InkStyle.normal),
-          ],
-        ),
-        InkWell(
-          onTap: () => controller.animateToPage(
-            controller.page != children.length - 1 ? children.length - 1 : 0,
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.ease,
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              buildInkPageIndicator(InkStyle.normal),
+            ],
           ),
-          child: PageView(
-            controller: controller,
-            children: children,
+          InkWell(
+            onTap: () => controller.animateToPage(
+              controller.page != children.length - 1 ? children.length - 1 : 0,
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.ease,
+            ),
+            child: PageView(
+              controller: controller,
+              children: children,
+            ),
           ),
-        ),
 
-      ],
+        ],
+      ),
     );
   }
 

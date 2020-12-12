@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intro_screen_onboarding_flutter/introduction.dart';
 import 'package:intro_screen_onboarding_flutter/introscreenonboarding.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authScreen.dart';
 
@@ -37,7 +38,9 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntroScreenOnboarding(introductionList: list, onTapSkipButton: () {
+    return IntroScreenOnboarding(introductionList: list, onTapSkipButton: () async {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setBool('firstTime', false);
       Navigator.push(
         context,
         MaterialPageRoute(

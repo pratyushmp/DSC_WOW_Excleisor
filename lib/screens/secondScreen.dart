@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:holding_gesture/holding_gesture.dart';
 import 'package:location/location.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -90,9 +91,10 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
     lastError = '';
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 10),
+        listenFor: Duration(minutes: 1),
         pauseFor: Duration(seconds: 20),
-        partialResults: false,
+        partialResults: true,
+        onDevice: true,
         localeId: _currentLocaleId,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
@@ -117,10 +119,14 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
 
   void resultListener(SpeechRecognitionResult result) {
     ++resultListened;
-    print('Result listener $resultListened');
+    print('Result listener ${result.recognizedWords}');
+    if(result.recognizedWords.contains('help')) {
+      Fluttertoast.showToast(msg: "Help !!");
+    }
     setState(() {
       lastWords = '${result.recognizedWords} - ${result.finalResult}';
     });
+    startListening();
   }
 
   void soundLevelListener(double level) {

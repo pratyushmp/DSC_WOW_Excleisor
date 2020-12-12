@@ -501,12 +501,10 @@ class _InfoPageState extends State<InfoPage> {
 
                                         var databaseReference = FirebaseDatabase.instance.reference();
                                         for(int i=0;i<familyMembers;i++) {
-                                          await databaseReference.child('Users').child('${widget.user.uid}').child('Family Members').set({
-                                            "${i+1}" : {
-                                              'Name' : nameControllers[i].text,
-                                              'Relation': relationControllers[i].text,
-                                              'Phone': numberControllers[i].text,
-                                            },
+                                          await databaseReference.child('Users').child('${widget.user.uid}').child('Family Members').push().set({
+                                            'Name' : nameControllers[i].text,
+                                            'Relation': relationControllers[i].text,
+                                            'Phone': numberControllers[i].text,
                                           });
                                         }
 

@@ -1,3 +1,4 @@
+import 'package:befikr_app/screens/homeScreen.dart';
 import 'package:befikr_app/screens/onboardingScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: OnboardingScreen(),
+      home: Scaffold(
+        body: Home(),
+      ),
     );
   }
 }

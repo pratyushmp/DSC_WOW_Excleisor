@@ -65,11 +65,13 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
 
 
   Future<void> initSpeechState() async {
+    print('init speech');
     var hasSpeech = await speech.initialize(
       onError: errorListener, 
       onStatus: statusListener, 
       debugLogging: true
     );
+    print('initialized');
     if (hasSpeech) {
       _localeNames = await speech.locales();
 
@@ -87,6 +89,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
   }
 
   void startListening() {
+    print('Starting to Listen !!');
     lastWords = '';
     lastError = '';
     speech.listen(
@@ -94,7 +97,8 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
         listenFor: Duration(minutes: 1),
         pauseFor: Duration(seconds: 20),
         partialResults: true,
-        onDevice: true,
+        
+        // onDevice: true,
         localeId: _currentLocaleId,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
@@ -119,12 +123,18 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
 
   void resultListener(SpeechRecognitionResult result) {
     ++resultListened;
-    print('Result listener ${result.recognizedWords}');
-    if(result.recognizedWords.contains('help')) {
+    
+    
+    String newWords = result.recognizedWords.substring(lastWords.length,result.recognizedWords.length);
+    print('$newWords');
+    if(newWords.contains('help')) {
       Fluttertoast.showToast(msg: "Help !!");
+      newWords = '';
     }
+    // newWords = '';
+    lastWords = '${result.recognizedWords}';
     setState(() {
-      lastWords = '${result.recognizedWords} - ${result.finalResult}';
+      // lastWords = '${result.recognizedWords} - ${result.finalResult}';
     });
     startListening();
   }

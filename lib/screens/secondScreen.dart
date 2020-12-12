@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/circlePainter.dart';
 import 'package:befikr_app/widgets/curve_wave.dart';
@@ -8,9 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:holding_gesture/holding_gesture.dart';
 import 'package:location/location.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 
 int count = 0;
 
+int flag = 0;
 
 
 class SecondScreen extends StatefulWidget {
@@ -43,15 +49,121 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
     _controller.dispose();
     super.dispose();
   }
-  Widget _button() {
 
+  bool _hasSpeech = false;
+  double level = 0.0;
+  double minSoundLevel = 50000;
+  double maxSoundLevel = -50000;
+  String lastWords = '';
+  String lastError = '';
+  String lastStatus = '';
+  String _currentLocaleId = '';
+  int resultListened = 0;
+  List<LocaleName> _localeNames = [];
+  final SpeechToText speech = SpeechToText();
+
+
+  Future<void> initSpeechState() async {
+    var hasSpeech = await speech.initialize(
+      onError: errorListener, 
+      onStatus: statusListener, 
+      debugLogging: true
+    );
+    if (hasSpeech) {
+      _localeNames = await speech.locales();
+
+      var systemLocale = await speech.systemLocale();
+      _currentLocaleId = systemLocale.localeId;
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _hasSpeech = hasSpeech;
+    });
+    // startListening();
     
+  }
+
+  void startListening() {
+    lastWords = '';
+    lastError = '';
+    speech.listen(
+        onResult: resultListener,
+        listenFor: Duration(seconds: 10),
+        pauseFor: Duration(seconds: 20),
+        partialResults: false,
+        localeId: _currentLocaleId,
+        onSoundLevelChange: soundLevelListener,
+        cancelOnError: true,
+        listenMode: ListenMode.confirmation);
+    setState(() {});
+  }
+
+  void stopListening() {
+    speech.stop();
+    print('Stopped');
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void cancelListening() {
+    speech.cancel();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    ++resultListened;
+    print('Result listener $resultListened');
+    setState(() {
+      lastWords = '${result.recognizedWords} - ${result.finalResult}';
+    });
+  }
+
+  void soundLevelListener(double level) {
+    minSoundLevel = min(minSoundLevel, level);
+    maxSoundLevel = max(maxSoundLevel, level);
+    // print("sound level $level: $minSoundLevel - $maxSoundLevel ");
+    setState(() {
+      this.level = level;
+    });
+  }
+
+  void errorListener(SpeechRecognitionError error) {
+    print("Received error status: $error, listening: ${speech.isListening}");
+    startListening();
+    setState(() {
+      lastError = '${error.errorMsg} - ${error.permanent}';
+    });
+  }
+
+  void statusListener(String status) {
+    // print(
+    // 'Received listener status: $status, listening: ${speech.isListening}');
+    setState(() {
+      lastStatus = '$status';
+      print('Last Status : $status');
+    });
+  }
+
+  void _switchLang(selectedVal) {
+    setState(() {
+      _currentLocaleId = selectedVal;
+    });
+    print(selectedVal);
+  }
+
+  Widget _button() {
     return HoldDetector(
-      onHold: () {
+      onHold: () async {
         count++;
         print(count);
-        if(count == 5) {
+        if(count == 5 && flag == 0) {
           // count = 0;
+          flag =1 ;
           widget.color = Colors.green;
           Location.instance.onLocationChanged.listen((locationData) async {
             if (locationData != null) {
@@ -61,6 +173,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
                 'Lat':locationData.latitude,
                 'Long':locationData.longitude
               });
+              
             }
           });
           _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -79,6 +192,8 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
               ],
             ),
           ));
+          if(flag == 1) await initSpeechState();
+          (!_hasSpeech || speech.isListening)? print('$_hasSpeech | ${speech.isListening} ') : startListening();
           setState(() {
             
           });

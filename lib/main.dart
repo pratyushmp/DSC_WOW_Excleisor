@@ -18,7 +18,7 @@ Future manageRoutes(context) async {
     await Firebase.initializeApp();
     var user =  FirebaseAuth.instance.currentUser;
     if ( user != null) {
-      return Home();
+      return Home(user: user,);
     } else {
       return AuthScreen();
     }

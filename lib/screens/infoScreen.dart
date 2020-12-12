@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:befikr_app/utils/constants.dart';
 import 'package:befikr_app/widgets/primaryButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter/material.dart';
 
 var datestring = "";
 
@@ -17,7 +17,7 @@ class InfoPage extends StatefulWidget {
   User user;
   InfoPage({this.user});
   @override
-  _InfoPageState createState() => new _InfoPageState();
+  _InfoPageState createState() => _InfoPageState();
 }
 
 class _InfoPageState extends State<InfoPage> {
@@ -62,6 +62,110 @@ class _InfoPageState extends State<InfoPage> {
       // familyCards.add(addFamilyCard(2));
       first = 1;
     }
+  }
+
+  String printdate(response) {
+    var date = response.day;
+    var month = response.month;
+    var year = response.year;
+    return "$date/$month/$year";
+  }
+
+  Widget addFamilyCard(int index) {
+    return Container(
+      // height: 100,
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0,7),
+            blurRadius: 20
+          )
+        ]
+      ),
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: Row(
+              children: [
+                Text(
+                  "Family Member $index",
+                  style: TextStyle(
+                    fontFamily: 'quicksand_bold'
+                  ),
+                ),
+
+                Spacer(),
+
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    if(familyMembers == 1) {
+                      Fluttertoast.showToast(msg: "Minimum Members should be 1");
+                    } else {
+                      familyCards.removeAt(index-1);
+                      familyMembers--;
+                      setState(() {
+                        
+                      });
+                    }
+                  },
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Name",
+                hintStyle: TextStyle(
+                  fontFamily: 'quicksand_bold',
+                )
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Relation",
+                hintStyle: TextStyle(
+                  fontFamily: 'quicksand_bold',
+                )
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: "Phone Number",
+                hintStyle: TextStyle(
+                  fontFamily: 'quicksand_bold',
+                )
+              ),
+            ),
+          ),
+
+          SizedBox(height:10),
+        ],
+      ),
+    );
   }
 
   @override
@@ -224,23 +328,37 @@ class _InfoPageState extends State<InfoPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        Loader.show(context,progressIndicator: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                                        ));
-                                        await Firebase.initializeApp();
+                                        if(nameController.text == "" || nameController.text == null) {
+                                          Fluttertoast.showToast(
+                                            msg: "Enter your Name"
+                                          );
+                                        } else if(dob == null) {
+                                          Fluttertoast.showToast(
+                                            msg: "Enter your Date Of Birth"
+                                          );
+                                        } else if(phoneNumber.text == "" || phoneNumber.text == null) {
+                                          Fluttertoast.showToast(
+                                            msg: "Enter your Phone Number"
+                                          );
+                                        } else {
+                                          Loader.show(context,progressIndicator: CircularProgressIndicator(
+                                            valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                                          ));
+                                          await Firebase.initializeApp();
 
-                                        var databaseReference = FirebaseDatabase.instance.reference();
-                                        await databaseReference.child('Users').child('${widget.user.uid}').set({
-                                          'Email':widget.user.email,
-                                          'Name':nameController.text,
-                                          'Phone Number':phoneNumber.text,
-                                        });
+                                          var databaseReference = FirebaseDatabase.instance.reference();
+                                          await databaseReference.child('Users').child('${widget.user.uid}').set({
+                                            'Email':widget.user.email,
+                                            'Name':nameController.text,
+                                            'Phone Number':phoneNumber.text,
+                                          });
 
-                                        Loader.hide();
-                                        currentStep++;
-                                        setState(() {
-                                          
-                                        });
+                                          Loader.hide();
+                                          currentStep++;
+                                          setState(() {
+                                            
+                                          });
+                                        }
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(right: 25.0),
@@ -386,107 +504,5 @@ class _InfoPageState extends State<InfoPage> {
           ]),
         ));
   }
-  String printdate(response) {
-    var date = response.day;
-    var month = response.month;
-    var year = response.year;
-    return "$date/$month/$year";
-  }
-
-  Widget addFamilyCard(int index) {
-    return Container(
-      // height: 100,
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0,7),
-            blurRadius: 20
-          )
-        ]
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
-            child: Row(
-              children: [
-                Text(
-                  "Family Member $index",
-                  style: TextStyle(
-                    fontFamily: 'quicksand_bold'
-                  ),
-                ),
-
-                Spacer(),
-
-                IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    if(familyMembers == 1) {
-                      Fluttertoast.showToast(msg: "Minimum Members should be 1");
-                    } else {
-                      familyCards.removeAt(index-1);
-                      familyMembers--;
-                      setState(() {
-                        
-                      });
-                    }
-                  },
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                hintText: "Name",
-                hintStyle: TextStyle(
-                  fontFamily: 'quicksand_bold',
-                )
-              ),
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                hintText: "Relation",
-                hintStyle: TextStyle(
-                  fontFamily: 'quicksand_bold',
-                )
-              ),
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:15.0,vertical: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                hintText: "Phone Number",
-                hintStyle: TextStyle(
-                  fontFamily: 'quicksand_bold',
-                )
-              ),
-            ),
-          ),
-
-          SizedBox(height:10),
-        ],
-      ),
-    );
-  }
 }
+

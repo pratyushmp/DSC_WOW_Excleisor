@@ -1,4 +1,4 @@
-import 'package:befikr_app/screens/Informationpage.dart';
+import 'package:befikr_app/screens/infoScreen.dart';
 import 'package:befikr_app/screens/verifyScreen.dart';
 import 'package:befikr_app/utils/authentication.dart';
 import 'package:befikr_app/utils/constants.dart';

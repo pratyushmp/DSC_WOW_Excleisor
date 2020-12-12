@@ -190,10 +190,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                     color: Colors.indigo),
                                 child: InkWell(
                                   onTap: () async {
-                                    Loader.show(context, progressIndicator: CircularProgressIndicator());
-                                    var response = await signInWithFacebook();
-                                    Loader.hide();
-                                    if(response != null) print(response.user.uid);
+                                    // Loader.show(context, progressIndicator: CircularProgressIndicator());
+                                    // var response = await signInWithFacebook();
+                                    // Loader.hide();
+                                    // if(response != null) print(response.user.uid);
                                     // print(response.user.uid);
                                   },
                                   customBorder: CircleBorder(),

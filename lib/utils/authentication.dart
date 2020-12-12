@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 Future checkUserLoggedIn() async{
@@ -86,28 +86,28 @@ Future<UserCredential> signInWithGoogle() async {
 
 
 
-Future<UserCredential> signInWithFacebook() async {
-  // try {
-    await Firebase.initializeApp();
-    // Trigger the sign-in flow
-    var result;
-    try {
-      result = await FacebookAuth.instance.login();
-    }
-    catch(e) {
-      print('exception: $e');
-    }
-    if(result == null) return null;
-    // Create a credential from the access token
-    final FacebookAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(result.token);
+// Future<UserCredential> signInWithFacebook() async {
+//   // try {
+//     await Firebase.initializeApp();
+//     // Trigger the sign-in flow
+//     var result;
+//     try {
+//       result = await FacebookAuth.instance.login();
+//     }
+//     catch(e) {
+//       print('exception: $e');
+//     }
+//     if(result == null) return null;
+//     // Create a credential from the access token
+//     final FacebookAuthCredential facebookAuthCredential =
+//     FacebookAuthProvider.credential(result.token);
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(
-        facebookAuthCredential);
-  // }
-  // on FacebookAuthException catch(e) {
-  //   return null;
-  //
-  // }
-}
+//     // Once signed in, return the UserCredential
+//     return await FirebaseAuth.instance.signInWithCredential(
+//         facebookAuthCredential);
+//   // }
+//   // on FacebookAuthException catch(e) {
+//   //   return null;
+//   //
+//   // }
+// }

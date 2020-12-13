@@ -44,6 +44,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     )..repeat();
+    initSpeechState();
   }
   @override
   void dispose() {
@@ -85,6 +86,7 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
       _hasSpeech = hasSpeech;
     });
     // startListening();
+    (!_hasSpeech || speech.isListening)? print('$_hasSpeech | ${speech.isListening} ') : startListening();
     
   }
 
@@ -121,15 +123,48 @@ class _SecondScreenState extends State<SecondScreen> with TickerProviderStateMix
     });
   }
 
-  void resultListener(SpeechRecognitionResult result) {
+  Future<void> resultListener(SpeechRecognitionResult result) async {
     ++resultListened;
     
     
     String newWords = result.recognizedWords.substring(lastWords.length,result.recognizedWords.length);
     print('$newWords');
-    if(newWords.contains('help')) {
+    if(newWords.contains('help') || newWords.contains('Help')) {
       Fluttertoast.showToast(msg: "Help !!");
       newWords = '';
+      widget.color = Colors.green;
+      Location.instance.onLocationChanged.listen((locationData) async {
+        if (locationData != null) {
+          await Firebase.initializeApp();
+          var databaseReference = FirebaseDatabase.instance.reference();
+          await databaseReference.child('Users').child(widget.user.uid).child('Location').set({
+            'Lat':locationData.latitude,
+            'Long':locationData.longitude
+          });
+          
+        }
+      });
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 1),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "You are SAFE !!",
+              style: TextStyle(
+                fontFamily: 'quicksand',
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ],
+        ),
+      ));
+      if(flag == 1) await initSpeechState();
+      (!_hasSpeech || speech.isListening)? print('$_hasSpeech | ${speech.isListening} ') : startListening();
+      setState(() {
+        
+      });
     }
     // newWords = '';
     lastWords = '${result.recognizedWords}';
